@@ -176,9 +176,10 @@ function onResize() {
   // compact phones (e.g. inside an app frame): scale the whole UI with the viewport so it never crowds the scene
   UI_Z = viewH <= 420 ? clamp(Math.min(viewH / 400, viewW / 860), 0.5, 1) : 1;
   document.documentElement.style.setProperty('--z', UI_Z.toFixed(3));
+  document.documentElement.style.setProperty('--zc', (UI_ZC = Math.max(UI_Z, 0.9)).toFixed(3)); // thumb-sized controls
   checkOrientation();
 }
-let UI_Z = 1;
+let UI_Z = 1, UI_ZC = 1;
 window.addEventListener('resize', onResize);
 function checkOrientation() {
   const el = document.getElementById('rotate');

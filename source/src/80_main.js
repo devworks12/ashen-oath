@@ -127,6 +127,7 @@ function updateHUD(dt) {
   UI.bossHud.classList.toggle('p2', boss.phase === 2);
   UI.flaskN.textContent = player.flasks;
   $('btnHeal').classList.toggle('empty', player.flasks <= 0);
+  $('btnSkill').classList.toggle('empty', player.fp < PL.skillFp);
 }
 
 // touch: virtual stick + buttons
@@ -137,7 +138,7 @@ function updateHUD(dt) {
   zone.addEventListener('pointerdown', (e) => {
     if (id !== null) return; id = e.pointerId; try { zone.setPointerCapture(id); } catch (x) {}
     const r = zone.getBoundingClientRect(); ox = e.clientX; oy = e.clientY;
-    base.classList.add('active'); R = R0 * UI_Z; base.style.left = (ox - r.left) / UI_Z + 'px'; base.style.top = (oy - r.top) / UI_Z + 'px'; base.style.bottom = 'auto';
+    base.classList.add('active'); R = R0 * UI_ZC; base.style.left = (ox - r.left) / UI_ZC + 'px'; base.style.top = (oy - r.top) / UI_ZC + 'px'; base.style.bottom = 'auto';
     e.preventDefault();
   });
   zone.addEventListener('pointermove', (e) => {
@@ -145,7 +146,7 @@ function updateHUD(dt) {
     let dx = e.clientX - ox, dy = e.clientY - oy; const l = Math.hypot(dx, dy);
     const ux = l > 0 ? dx / l : 0, uy = l > 0 ? dy / l : 0; // direction from the raw drag (clamping below is visual only)
     if (l > R) { dx *= R / l; dy *= R / l; }
-    knob.style.transform = `translate(calc(-50% + ${dx / UI_Z}px), calc(-50% + ${dy / UI_Z}px))`;
+    knob.style.transform = `translate(calc(-50% + ${dx / UI_ZC}px), calc(-50% + ${dy / UI_ZC}px))`;
     const m = Math.min(1, l / R); const dz = m < 0.12 ? 0 : (m - 0.12) / 0.88;
     INPUT.sx = ux * dz; INPUT.sy = -uy * dz;
   });

@@ -110,7 +110,7 @@ svg.ic{fill:none;stroke:var(--bone);stroke-width:1.5;stroke-linecap:round;stroke
 #btnGuard{width:72px;height:72px;right:calc(44px + var(--sr));bottom:calc(136px + var(--sb));}
 #btnSkill{width:68px;height:68px;right:calc(48px + var(--sr));bottom:calc(224px + var(--sb));}
 #btnHeal b{position:absolute;right:-3px;bottom:-3px;min-width:22px;height:22px;display:grid;place-items:center;font:600 13px/1 var(--display);background:#0e0d0c;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(214,196,158,.6);}
-#btnHeal.empty{opacity:.45;}
+#btnHeal.empty,#btnSkill.empty{opacity:.42;}
 .btn .lbl{display:none;}
 #btnPause{position:fixed;right:calc(16px + var(--sr));top:calc(12px + var(--st));width:46px;height:46px;border-radius:50%;border:0;padding:0;z-index:6;display:grid;place-items:center;
   background:radial-gradient(circle,rgba(20,19,18,.6),rgba(6,6,6,.75));box-shadow:inset 0 0 0 1.5px rgba(214,196,158,.55),0 2px 8px rgba(0,0,0,.5);}
@@ -249,27 +249,40 @@ input[type=range]{width:100%;accent-color:#c9a86a;}
 
 /* ---- compact phones (landscape height ≤ 420) */
 @media (max-height:420px){
-  #emblem{width:52px;height:62px;}
-  .barw.hp{--h:8px;} .barw.fp,.barw.stb{--h:6px;}
-  #eqFlaskSlot{width:42px;height:46px;} #eqFlaskSlot svg{width:28px;height:32px;}
-  #eqArt{padding:4px 12px 4px 4px;gap:8px;} #eqArt .icon{width:36px;height:36px;} #eqArt .icon svg{width:30px;height:30px;} #eqArt b,#eqArt em{font-size:12px;}
-  #btnAtk{width:82px;height:82px;right:calc(18px + var(--sr));bottom:calc(14px + var(--sb));}
-  #btnDodge{width:70px;height:70px;right:calc(114px + var(--sr));bottom:calc(10px + var(--sb));}
-  #btnJump{width:44px;height:44px;right:calc(200px + var(--sr));bottom:calc(16px + var(--sb));}
-  #btnHeal{width:48px;height:48px;right:calc(120px + var(--sr));bottom:calc(96px + var(--sb));}
-  #btnGuard{width:60px;height:60px;right:calc(34px + var(--sr));bottom:calc(110px + var(--sb));}
-  #btnSkill{width:54px;height:54px;right:calc(38px + var(--sr));bottom:calc(182px + var(--sb));}
-  #stickBase{width:136px;height:136px;left:calc(96px + var(--sl));bottom:calc(90px + var(--sb));margin:0 0 -68px -68px;}
-  #stickBase.active{margin:-68px 0 0 -68px;}
-  #stickKnob{width:58px;height:58px;}
-  #bossHud{width:min(44vw,560px);bottom:calc(8px + var(--sb));}
-  /* one uniform scale for every HUD / control element (set from JS as --z) */
-  #hud,#ashes,#bossHud,.btn,#stickBase,#btnPause,.tut,#title .inner,.topright,.foot{zoom:var(--z,1);}
-  /* lighter visual weight on small screens: the scene stays the focus */
-  .btn{background:radial-gradient(circle at 50% 36%,rgba(44,42,40,.4),rgba(8,8,8,.55) 70%);box-shadow:inset 0 0 0 1.5px rgba(214,196,158,.5),inset 0 0 0 5px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.4);}
-  .btn svg{opacity:.85;}
-  #stickBase{opacity:.6;}
-  .barw.hp{--w:min(34vw,520px);} .barw.fp{--w:min(25vw,380px);} .barw.stb{--w:min(21vw,330px);}
+  /* --- compact HUD: bars only (flask count and skill availability live on their buttons) */
+  #emblem,#equip{display:none;}
+  #hud{left:calc(12px + var(--sl));top:calc(8px + var(--st));}
+  .barw.hp{--h:7px;--w:min(30vw,420px);} .barw.fp{--h:4px;--w:min(21vw,300px);} .barw.stb{--h:4px;--w:min(18vw,260px);}
+  #bars{gap:4px;}
+  body[data-mode="fight"] #ashes{display:none;}
+  #btnPause{width:38px;height:38px;}
+  #btnPause::before{content:"";position:absolute;inset:-9px;border-radius:50%;}
+  #bossHud{width:min(38vw,520px);bottom:calc(6px + var(--sb));}
+  #bossHud .bname{font-size:14px;letter-spacing:.14em;}
+  .bframe{height:8px;margin-top:5px;}
+  /* --- controls: an arc around the attack button instead of a tall stack (centre of Attack = 56px from right, 52px from bottom) */
+  #btnAtk{width:76px;height:76px;right:calc(18px + var(--sr));bottom:calc(14px + var(--sb));}
+  #btnDodge{width:62px;height:62px;right:calc(101px + var(--sr));bottom:calc(21px + var(--sb));}
+  #btnGuard{width:56px;height:56px;right:calc(32px + var(--sr));bottom:calc(98px + var(--sb));}
+  #btnSkill{width:50px;height:50px;right:calc(101px + var(--sr));bottom:calc(93px + var(--sb));}
+  #btnHeal{width:50px;height:50px;right:calc(171px + var(--sr));bottom:calc(67px + var(--sb));}
+  #btnJump{width:48px;height:48px;right:calc(184px + var(--sr));bottom:calc(8px + var(--sb));}
+  #btnHeal b{min-width:18px;height:18px;font-size:11px;right:-4px;bottom:-4px;}
+  /* touch area reaches a little past the drawn ring */
+  .btn::before{content:"";position:absolute;inset:-5px;border-radius:50%;}
+  #btnAtk{z-index:2;}
+  #stickBase{width:128px;height:128px;left:calc(92px + var(--sl));bottom:calc(84px + var(--sb));margin:0 0 -64px -64px;}
+  #stickBase.active{margin:-64px 0 0 -64px;}
+  #stickKnob{width:54px;height:54px;}
+  /* HUD scales with the screen; controls never shrink below a comfortable thumb size (--zc ≥ 0.9) */
+  #hud,#ashes,#bossHud,#btnPause,.tut,#title .inner,.topright,.foot{zoom:var(--z,1);}
+  .btn,#stickBase{zoom:var(--zc,1);}
+  /* lighter visual weight: thin single rim, translucent fill */
+  .btn{background:radial-gradient(circle at 50% 38%,rgba(40,38,36,.32),rgba(8,8,8,.46) 72%);box-shadow:inset 0 0 0 1.2px rgba(214,196,158,.48),0 1px 6px rgba(0,0,0,.35);}
+  .btn svg{width:44%;height:44%;opacity:.88;}
+  #btnAtk svg{width:48%;height:48%;}
+  #stickBase{opacity:.38;}
+  #stickBase.active{opacity:.85;}
   #title .inner p{display:none;} .bossopt{padding:5px 12px 5px 8px;} .bossopt small{display:none;}
   #title .inner{gap:9px;} .foot{bottom:calc(10px + var(--sb));} .keys{display:none;}
   .cta{padding:12px 26px;} .textbtn{padding:10px 26px;}
@@ -583,9 +596,10 @@ function onResize() {
   // compact phones (e.g. inside an app frame): scale the whole UI with the viewport so it never crowds the scene
   UI_Z = viewH <= 420 ? clamp(Math.min(viewH / 400, viewW / 860), 0.5, 1) : 1;
   document.documentElement.style.setProperty('--z', UI_Z.toFixed(3));
+  document.documentElement.style.setProperty('--zc', (UI_ZC = Math.max(UI_Z, 0.9)).toFixed(3)); // thumb-sized controls
   checkOrientation();
 }
-let UI_Z = 1;
+let UI_Z = 1, UI_ZC = 1;
 window.addEventListener('resize', onResize);
 function checkOrientation() {
   const el = document.getElementById('rotate');
@@ -4937,6 +4951,7 @@ function updateHUD(dt) {
   UI.bossHud.classList.toggle('p2', boss.phase === 2);
   UI.flaskN.textContent = player.flasks;
   $('btnHeal').classList.toggle('empty', player.flasks <= 0);
+  $('btnSkill').classList.toggle('empty', player.fp < PL.skillFp);
 }
 
 // touch: virtual stick + buttons
@@ -4947,7 +4962,7 @@ function updateHUD(dt) {
   zone.addEventListener('pointerdown', (e) => {
     if (id !== null) return; id = e.pointerId; try { zone.setPointerCapture(id); } catch (x) {}
     const r = zone.getBoundingClientRect(); ox = e.clientX; oy = e.clientY;
-    base.classList.add('active'); R = R0 * UI_Z; base.style.left = (ox - r.left) / UI_Z + 'px'; base.style.top = (oy - r.top) / UI_Z + 'px'; base.style.bottom = 'auto';
+    base.classList.add('active'); R = R0 * UI_ZC; base.style.left = (ox - r.left) / UI_ZC + 'px'; base.style.top = (oy - r.top) / UI_ZC + 'px'; base.style.bottom = 'auto';
     e.preventDefault();
   });
   zone.addEventListener('pointermove', (e) => {
@@ -4955,7 +4970,7 @@ function updateHUD(dt) {
     let dx = e.clientX - ox, dy = e.clientY - oy; const l = Math.hypot(dx, dy);
     const ux = l > 0 ? dx / l : 0, uy = l > 0 ? dy / l : 0; // direction from the raw drag (clamping below is visual only)
     if (l > R) { dx *= R / l; dy *= R / l; }
-    knob.style.transform = `translate(calc(-50% + ${dx / UI_Z}px), calc(-50% + ${dy / UI_Z}px))`;
+    knob.style.transform = `translate(calc(-50% + ${dx / UI_ZC}px), calc(-50% + ${dy / UI_ZC}px))`;
     const m = Math.min(1, l / R); const dz = m < 0.12 ? 0 : (m - 0.12) / 0.88;
     INPUT.sx = ux * dz; INPUT.sy = -uy * dz;
   });
