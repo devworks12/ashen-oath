@@ -1,4 +1,4 @@
-import { chromium } from '/home/claude/.npm-global/lib/node_modules/playwright/index.mjs';
+import { chromium } from 'playwright'; // npm i playwright
 import fs from 'fs'; import path from 'path';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..'); // source/
 export async function open(opts={}){
