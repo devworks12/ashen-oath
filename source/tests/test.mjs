@@ -1,6 +1,6 @@
 import { chromium } from '/home/claude/.npm-global/lib/node_modules/playwright/index.mjs';
 import fs from 'fs'; import path from 'path';
-const ROOT='/home/claude/ashen';
+const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..'); // source/
 export async function open(opts={}){
   const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist'] });
   const page = await browser.newPage({ viewport: opts.vp || { width: 900, height: 420 }, deviceScaleFactor: 1 });
