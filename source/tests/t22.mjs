@@ -1,0 +1,20 @@
+import { open } from './test.mjs';
+const vp = JSON.parse(process.argv[2] || '{"width":1280,"height":720}');
+const { browser, page, logs } = await open({ vp });
+await page.waitForFunction(() => window.__ashen, null, { timeout: 120000 });
+await page.waitForTimeout(800);
+await page.evaluate(() => { window.__manual = true; const A = window.__ashen; A.selectBoss('herald'); for (let i = 0; i < 30; i++) A.step(1 / 60); A.render(); });
+await page.screenshot({ path: 'shots/h_title.png' });
+// close-up portrait
+const shoot = async (name, fn) => { await page.evaluate(fn); await page.waitForTimeout(150); await page.screenshot({ path: `shots/${name}.png` }); };
+await shoot('h_close', () => { const A = window.__ashen, B = A.boss; A.CAM.mode = 'manual'; const p = B.pos; A.CAM.manual = [p.x + 1.2, 2.0, p.z + 3.4, p.x, 1.9, p.z]; for (let i = 0; i < 20; i++) A.step(1 / 60); A.render(); });
+await shoot('h_p2', () => { const A = window.__ashen, B = A.boss; B.setPhaseLook(1); B.heat = 1; for (let i = 0; i < 20; i++) A.step(1 / 60); A.render(); });
+await page.click('#btnContinue');
+await shoot('h_fight', () => { const A = window.__ashen, B = A.boss, P = A.player; A.CAM.t = 5; for (let i = 0; i < 30; i++) A.step(1 / 60); B.state = 'observe'; B.gap = 99; P.pos.set(0, 0, 2); for (let i = 0; i < 10; i++) A.step(1/60);
+  B.startMove(A.MOVES.volley); B.warp = null; for (let i = 0; i < 60 * 0.62; i++) A.step(1 / 60); A.render(); });
+await shoot('h_volley', () => { const A = window.__ashen; for (let i = 0; i < 60 * 0.42; i++) A.step(1 / 60); A.render(); });
+await shoot('h_great', () => { const A = window.__ashen, B = A.boss, P = A.player; P.hp = 1e6; B.phase = 2; B.setPhaseLook(1); B.state = 'observe'; B.gap = 99; for (let i = 0; i < 90; i++) A.step(1/60); P.pos.set(B.pos.x + 0.5, 0, B.pos.z + 4);
+  B.startMove(A.MOVES.greatConjure); B.warp = null; for (let i = 0; i < 60 * 1.2; i++) A.step(1 / 60); A.render(); });
+await shoot('h_rain', () => { const A = window.__ashen, B = A.boss, P = A.player; for (let i = 0; i < 200; i++) A.step(1/60); B.state = 'observe'; B.gap = 99; B.startMove(A.MOVES.rain); B.warp = null; for (let i = 0; i < 60 * 2.1; i++) A.step(1 / 60); A.render(); });
+console.log(logs.filter((l) => /error|Error/.test(l)).slice(0, 8).join('\n'));
+await browser.close();

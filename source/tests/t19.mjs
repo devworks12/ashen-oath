@@ -1,0 +1,14 @@
+import { open } from './test.mjs';
+const vp = JSON.parse(process.argv[2] || '{"width":844,"height":390}');
+const { browser, page, logs } = await open({ vp });
+await page.waitForFunction(() => window.__ashen, null, { timeout: 120000 });
+await page.waitForTimeout(1500);
+await page.evaluate(() => { window.__manual = true; const A = window.__ashen; for (let i=0;i<20;i++) A.step(1/60); A.render(); });
+await page.waitForTimeout(700);
+await page.screenshot({ path: `shots/m_title_${vp.width}.png` });
+await page.click('#btnContinue');
+await page.evaluate(() => { window.__manual = true; const A = window.__ashen; for (let i=0;i<60*2.2;i++) A.step(1/60); A.player.fp=45; A.player.hp=880; A.boss.hp=3300; for (let i=0;i<30;i++) A.step(1/60); A.render(); });
+await page.waitForTimeout(400);
+await page.screenshot({ path: `shots/m_hud_${vp.width}.png` });
+console.log(logs.filter(l=>!l.includes('non-indexed')).slice(0,20).join('\n'));
+await browser.close();
